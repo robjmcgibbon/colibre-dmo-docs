@@ -1,0 +1,148 @@
+/*
+  Site branding for the Piccolo theme header.
+
+  This overrides the Piccolo navbar color and sizes the logo shown in the
+  top navigation.
+*/
+:root {
+    --mainNavColor: #2683e0;
+}
+
+div#top_nav nav h1 img.site_logo {
+    height: 2rem;
+    width: auto;
+    vertical-align: middle;
+    margin-right: 0.7rem;
+}
+
+/*
+  Main content layout for the Piccolo theme.
+
+  Piccolo reserves 15rem on both sides of the main document area: the left
+  margin makes room for the fixed navigation sidebar, and the right margin
+  makes room for the page-contents sidebar. Since the right sidebar is hidden
+  below, we remove the right margin here so the document can use that space.
+  The body and documentwrapper rules then set a fixed reading width for the
+  main text column within the remaining document area.
+*/
+div.document {
+    margin-right: 0;
+}
+
+/*
+  Fixed-width reading column inside the main document area.
+
+  The body rule prevents the text column from becoming too narrow, and the
+  max-width limits line length on large screens. The documentwrapper width
+  matches that cap and keeps a small left offset inside the document area.
+*/
+div.body {
+    min-width: 360px;
+    max-width: 1000px;
+}
+
+div.document div.documentwrapper {
+    max-width: 1000px;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+/*
+  Sidebar behavior for the Piccolo theme.
+*/
+
+/* Hide the right-hand page contents sidebar and its toggle */
+#right_sidebar,
+#show_right_sidebar {
+    display: none;
+}
+
+/* The top-left hamburger should only be visible when the left-hand sidebar disappears */
+@media (min-width: 50rem) {
+  #toggle_sidebar {
+      display: none;
+  }
+}
+
+/*
+  Removes the background and border from download links
+*/
+
+a.download code.literal {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: #2980b9;
+}
+
+
+/*
+  Styling for tables
+*/
+
+/* Header Styling: Light background with a strong border */
+table.docutils thead th {
+    background-color: #f8f9fb;
+    color: #333;
+    border-bottom: 2px solid #dee2e6;
+    text-align: center !important;
+}
+
+/* Zebra Striping: Makes long lists easier to read */
+table.docutils tbody tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+/* Hover effect: Highlights the current row */
+/* Only applying to the simulation tables */
+table.simulation-table tbody tr:hover {
+    background-color: #f1f4f9;
+}
+
+/* Custom class for horizontal dividers, place a line after each resolution end */
+table.thermal-table.row-divider tr:nth-child(4) td {
+    border-bottom: 2px solid #333 !important;
+}
+table.thermal-table.row-divider tr:nth-child(8) td {
+    border-bottom: 2px solid #333 !important;
+}
+table.hybrid-table.row-divider tr:nth-child(2) td {
+    border-bottom: 2px solid #333 !important;
+}
+table.hybrid-table.row-divider tr:nth-child(5) td {
+    border-bottom: 2px solid #333 !important;
+}
+
+/* Slightly larger title for the "Getting started" admonition on the
+   analysis page (tools/index) */
+div.admonition.getting-started > p.admonition-title {
+  font-size: 1.2em;
+}
+
+/* Grid of tables used for list of snapshot redshifts*/
+div.table-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+div.table-grid > table {
+  border: 2px solid #444;     /* Add border to tables within grid */
+}
+
+/*
+  Directory name shown at the top of each variation-run dropdown.
+
+  The rule below the directory name separates it from the description that
+  follows, so the two do not read as a single block of prose.
+*/
+div.run-dir {
+    padding-bottom: 0.5em;
+    margin-bottom: 0.8em;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+}
+
+div.run-dir p {
+    margin-bottom: 0;
+}
