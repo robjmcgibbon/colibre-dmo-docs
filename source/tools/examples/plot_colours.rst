@@ -6,9 +6,6 @@ COLIBRE colour scheme
 The following are the colours that are used for each resolution for the plots in the COLIBRE overview and calibration papers.
 You can use them if you would like to be consistent, but also feel free to pick your own colours.
 
-When comparing thermal and hybrid AGN models at multiple resolutions, we typically use colour to indicate the resolution level
-and linestyle to distinguish between models (thermal or hybrid) at fixed resolution.
-
 .. code-block:: python
 
     import matplotlib.pyplot as plt

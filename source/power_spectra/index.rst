@@ -1,7 +1,7 @@
 Power spectra
 =============
 
-Each simulation directory contains a set of ASCII text files representing various power spectra and cross-spectra. These are available at 123 different redshifts, indexed from ``0000`` to ``0122``. 
+Each simulation directory contains a set of ASCII text files containing the matter power spectrum. These are available at 123 different redshifts, indexed from ``0000`` to ``0122``. 
 
 .. dropdown:: Table of power spectra output redshifts
 
@@ -257,21 +257,14 @@ Each simulation directory contains a set of ASCII text files representing variou
       * - 122
         - 0.00
 
-The files follow the naming convention ``power_<type>_<index>.txt``. The following types of auto-spectra and cross-spectra are available:
+The files follow the naming convention ``power_<type>_<index>.txt``. Two types
+are written:
 
-* **Auto-spectra**:
-    * ``matter``: Total matter
-    * ``cdm``: Cold Dark Matter (CDM)
-    * ``gas``: Gas
-    * ``starBH``: Stars and Black Holes
-    * ``pressure``: Electron pressure :math:`P_e = n_e k_B T`, where :math:`n_e` is the electron density, :math:`k_B` is the Boltzmann constant, and :math:`T` is the temperature.
+* ``matter``: Total matter
+* ``cdm``: Cold Dark Matter (CDM)
 
-* **Cross-spectra**:
-    * ``cdm-gas``: CDM and gas
-    * ``cdm-starBH``: CDM and stars/Black Holes
-    * ``gas-matter``: Gas and total matter
-    * ``gas-starBH``: Gas and stars/Black Holes
-    * ``matter-pressure``: Total matter and electron pressure
+All of the matter in these simulations is CDM, so the two are equivalent and
+either can be used.
 
 The power spectra do contain some small artifacts which are due to combining foldings, and are not real.
 
@@ -310,5 +303,3 @@ The example below shows how to load two files and plot the results.
    ax.legend()
 
    plt.show()
-
-

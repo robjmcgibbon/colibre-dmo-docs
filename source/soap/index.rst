@@ -21,9 +21,7 @@ halo/galaxy definitions, as described within the following pages.
    soap_halo_variations
    soap_filters
    soap_property_table
-   soap_matching
    hbt_merger_trees
-   soap_additional
 
 .. note:: Within the cosmological simulation community people refer to both
           "halos" and "subhalos", occasionally in an inconsistent manner.

@@ -1,8 +1,9 @@
 Snapshot directory layout
 =========================
 
-On COSMA the run directory for each simulation is located at
-``/cosma8/data/dp004/colibre/Runs/<run name>``.
+Each simulation has its own directory on the data service, at
+``COLIBRE/<box size and resolution>/DMO``, for example
+``COLIBRE/L100_m6/DMO``.
 
 The layout of the snapshot files for each simulation is shown in the
 diagram below. The ``snapshots`` directory is output by SWIFT, with one
@@ -13,8 +14,8 @@ between snapshot number and redshift.
 The ``SOAP-HBT`` directory contains particle membership
 information (what subhalo each particle is bound to).
 
-.. tip:: The easiest way to access particle data is to use :doc:`swiftsimio
-         <../tools/swiftsimio>` to read the :ref:`virtual-snapshot`
+.. tip:: The easiest way to access particle data is to use `swiftsimio <https://swiftsimio.readthedocs.io/>`__
+         to read the :ref:`virtual-snapshot`
          so that you don't need to concatenate data from multiple
          files and unit metadata is read automatically.
 
@@ -51,7 +52,6 @@ information (what subhalo each particle is bound to).
     membership_0000.0.hdf5
     membership_0000.1.hdf5
     ...`"]
-
 
 .. _virtual-snapshot:
 
@@ -102,5 +102,3 @@ to read from all of the files in the corresponding set.
    silently returns incorrect "fill" values! So if you download a
    virtual snapshot and get strange results, it may be that HDF5 isn't
    finding the real data files.
-
-

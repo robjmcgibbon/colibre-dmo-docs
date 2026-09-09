@@ -2,7 +2,7 @@ HBT-HERONS merger trees
 =======================
 
 .. note::
-  To track the evolution of a galaxy (i.e. the main progenitor branch) then the full HBT-HERONS merger trees are not required.
+  To track the evolution of a subhalo (i.e. the main progenitor branch) then the full HBT-HERONS merger trees are not required.
   Each subhalo is assigned a unique ``TrackId`` which remains consistent across all snapshots,
   and this allows the quick retrieval of the main progenitor of a given subhalo.
   For example, the main progenitor of a :math:`z = 0` subhalo with ``TrackId = 10`` corresponds to the subhalo whose ``TrackId = 10`` at earlier times.
@@ -24,7 +24,6 @@ was used to generate a subhalo catalogue can be found by inspecting the
 ``git_hash`` attribute of the ``Header`` group in the HDF5 output file.
 
 The catalogues are sorted by ``TrackId``. This makes file reads for single objects fast, since the index location of a subhalo is known beforehand, as it is simply its ``TrackId``. The following properties are available for each subhalo:
-
 
 .. list-table::
    :header-rows: 1
@@ -141,7 +140,7 @@ The catalogues are sorted by ``TrackId``. This makes file reads for single objec
      - The number of hierarchical connections that the subhalo is away from the central, e.g. 0 for centrals, 1 for satellites, 2 for satellites of satellites.
      - :math:`-`
 
-In order to get access to :doc:`all the halo/galaxy properties calculated by SOAP<soap_property_table>`, the two catalogues can be linked using the ``TrackId`` field, as shown in the example below.
+In order to get access to :ref:`all the halo properties calculated by SOAP <soap_property_table>`, the two catalogues can be linked using the ``TrackId`` field, as shown in the example below.
 
 .. _warning_hbt_m200:
 
@@ -157,17 +156,20 @@ Evolution of a subhalo example
 
 .. code-block:: python
 
-    import h5py
+    import hdfstream
     import matplotlib.pyplot as plt
     import numpy as np
     import swiftsimio as sw
 
-    root_dir = '/cosma8/data/dp004/colibre/Runs'
-    sim = 'L0025N0188/Thermal'
+    # Files are read from the data service without downloading them. See the
+    # swiftsimio page for how to open files you have downloaded instead.
+    root_dir = hdfstream.open("cosma", "/")
+
+    sim = 'COLIBRE/L025_m7/DMO'
     final_snap_nr = 127
 
-    # Load the z=0 SOAP catalogue from the L1_m9 simulation
-    soap = sw.load(f"{root_dir}/{sim}/SOAP-HBT/halo_properties_{final_snap_nr:04}.hdf5")
+    # Load the z=0 SOAP catalogue
+    soap = sw.load(root_dir[f"{sim}/SOAP-HBT/halo_properties_{final_snap_nr:04}.hdf5"])
 
     # Pick the most massive satellite which has lost at least 70% of its mass
     mask = soap.input_halos.is_central.value == 0
@@ -187,20 +189,18 @@ Evolution of a subhalo example
     mass_evolution_msun = np.zeros((n_exist, 6))
     scale_factor = np.zeros(n_exist)
 
-    # Loop through the catalogues and extract the mass for this object
-    hbt_basename = f"{root_dir}/{sim}/HBT-HERONS/sorted_catalogues/OrderedSubSnap_{{snap_nr:03}}.hdf5"
+    # Loop through the catalogues and extract the mass for this object.
+    # A remote file behaves like a h5py.File.
+    hbt_basename = f"{sim}/HBT-HERONS/sorted_catalogues/OrderedSubSnap_{{snap_nr:03}}.hdf5"
     for i in range(n_exist):
-        hbt_filename = hbt_basename.format(snap_nr=birth_snap_nr+i)
-        with h5py.File(hbt_filename, "r") as file:
-            # Mass is stored in units of 10^10 Msun
-            mass_evolution_msun[i] = file["Subhalos/MboundType"][track_id] * 10 ** 10
-            scale_factor[i] = file['Cosmology']['ScaleFactor'][0]
+        file = root_dir[hbt_basename.format(snap_nr=birth_snap_nr+i)]
+        # Mass is stored in units of 10^10 Msun
+        mass_evolution_msun[i] = file["Subhalos/MboundType"][track_id] * 10 ** 10
+        scale_factor[i] = file['Cosmology']['ScaleFactor'][0]
 
     # Plot the results
     fig, ax = plt.subplots(1)
     ax.plot(scale_factor, mass_evolution_msun[:, 1], label='Dark matter', color='k')
-    ax.plot(scale_factor, mass_evolution_msun[:, 0], label='Gas', color='tab:green')
-    ax.plot(scale_factor, mass_evolution_msun[:, 4], label='Stars', color='tab:orange')
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.set_xlabel('Scale factor')
@@ -208,4 +208,3 @@ Evolution of a subhalo example
     ax.legend()
     plt.savefig('hbt_example.png')
     plt.close()
-

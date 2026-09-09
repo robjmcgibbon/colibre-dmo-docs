@@ -8,7 +8,7 @@ from sphinx.application import Sphinx
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'COLIBRE Documentation'
+project = 'COLIBRE DMO Documentation'
 copyright = '2026, The COLIBRE Team'
 author = 'Rob McGibbon & John Helly'
 
@@ -39,12 +39,17 @@ html_favicon = '_static/favicon.ico'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_static_path = ['_static']
-html_title = 'COLIBRE Documentation'
+html_title = 'COLIBRE DMO Documentation'
 
 # Keep the short title as plain text. The logo is injected by the custom
 # layout template so Sphinx can generate the correct relative path on every
 # page, including nested sections.
 html_short_title = 'COLIBRE Data Products'
+
+# This documentation is public. Sphinx otherwise copies the raw .rst of every
+# page into _sources/, which publishes any comments left in the source.
+html_copy_source = False
+html_show_sourcelink = False
 
 # Select the piccolo theme
 html_theme = 'piccolo_theme'
@@ -80,6 +85,4 @@ def _highlight_role(background):
 
 def setup(app: Sphinx):
     app.add_role("avail", _highlight_role("#c8e6c9"))     # light green
-    app.add_role("snaponly", _highlight_role("#bbdefb"))  # light blue
     app.add_role("unavail", _highlight_role("#ffcdd2"))   # light red
-

@@ -24,9 +24,7 @@ Exclusive sphere
 Exclusive sphere properties are similar to subhalo quantities as they include only the
 particles that are bound to the subhalo, but they apply an additional radial cut (aperture). Exclusive sphere
 properties are contained within the group ``ExclusiveSphere``. Groups with the label ``XXXkpc`` have an
-aperture radius of ``XXX`` **physical** kpc. Groups with a property name have a cut using the value
-of the property calculated for the bound subhalo (e.g. the aperture cut for ``ExclusiveSphere/HalfMassRadiusTotal``
-is given by the value of ``BoundSubhalo/HalfMassRadiusTotal``), meaning a different radial cut is used for each subhalo.
+aperture radius of ``XXX`` **physical** kpc.
 
 .. _inclusive_sphere_description:
 
@@ -153,9 +151,6 @@ found :doc:`in the next section <soap_filters>`.
    * - ``exclusive_sphere_100kpc``
      - ❌
      - basic
-   * - ``exclusive_sphere_2xhalfmassradiusstars``
-     - ❌
-     - basic
    * - ``inclusive_sphere_100pc``
      - ✅
      - basic
@@ -178,9 +173,6 @@ found :doc:`in the next section <soap_filters>`.
      - ✅
      - basic
    * - ``inclusive_sphere_100kpc``
-     - ✅
-     - basic
-   * - ``inclusive_sphere_2xhalfmassradiusstars``
      - ✅
      - basic
    * - ``projected_aperture_100pc_projP``
@@ -207,9 +199,6 @@ found :doc:`in the next section <soap_filters>`.
    * - ``projected_aperture_100kpc_projP``
      - ❌
      - basic
-   * - ``projected_aperture_2xhalfmassradiusstars_projP``
-     - ❌
-     - basic
    * - ``soap``
      - \
      - basic
@@ -222,7 +211,6 @@ found :doc:`in the next section <soap_filters>`.
    * - ``input_halos_fof``
      - \
      - basic
-
 
 Spherical overdensity calculations
 ----------------------------------

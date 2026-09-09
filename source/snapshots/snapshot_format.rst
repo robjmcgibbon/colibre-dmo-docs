@@ -123,13 +123,12 @@ described in the ``InternalCodeUnits`` group. In COLIBRE, the
 snapshot and internal unit systems are the same.
 
 The exact units used for each particle property are documented in
-:doc:`snapshot_particle_properties`.
+:ref:`Particle properties <snapshot_particle_properties>`.
 
 Particle types
 --------------
 
-The COLIBRE simulations contain gas, dark matter, star, black hole
-and neutrino particles. There is an HDF5 group for each particle
+There is an HDF5 group for each particle
 type. Within these groups particle properties (position, mass,
 velocity etc) are stored as HDF5 datasets. The particle type groups
 follow Gadget-2's ``PartTypeX`` naming scheme but there are also
@@ -141,23 +140,11 @@ symbolic links to the groups with more descriptive names.
    * - Particle type
      - HDF5 group name
      - Link name
-   * - Gas particles
-     - ``PartType0``
-     - ``GasParticles``
    * - Dark matter particles
      - ``PartType1``
      - ``DMParticles``
-   * - Star particles
-     - ``PartType4``
-     - ``StarsParticles``
-   * - Black hole particles
-     - ``PartType5``
-     - ``BHParticles``
-   * - Neutrino particles
-     - ``PartType6``
-     - ``NeutrinoParticles``
 
-The quantities stored for each particle type are described in :doc:`snapshot_particle_properties`.
+The quantities stored for each particle type are described in :ref:`Particle properties <snapshot_particle_properties>`.
 
 Particle datasets
 -----------------

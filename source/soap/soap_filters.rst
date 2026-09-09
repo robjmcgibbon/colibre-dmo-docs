@@ -6,7 +6,7 @@ contains sufficient
 particles. HBT-HERONS was run with a configuration that requires each
 subhalo to have at least 20 particles. However, even for those
 particle numbers, a lot of the properties computed by SOAP will be zero
-(e.g. the gas mass within a 10 kpc aperture), or have values that are
+(e.g. the dark matter mass within a 1 kpc aperture), or have values that are
 outliers compared to the full halo population because of undersampling.
 To save disk space and reduce the computation time, we filter these 
 out by applying appropriate cuts. Filtering means setting the 
@@ -28,10 +28,10 @@ subhalo.
 The criteria defining
 the different categories are listed in the table below.
 
-+---------+-----------------------------------------------------------------------+
-| Name    | Criterion                                                             |
-+=========+=======================================================================+
-| basic   | all subhalos                                                          |
-+---------+-----------------------------------------------------------------------+
-| general | :math:`N_{\rm{}gas}+N_{\rm{}dm}+N_{\rm{}star}+N_{\rm{}BH} \geq{} 100` |
-+---------+-----------------------------------------------------------------------+
++---------+--------------------------------+
+| Name    | Criterion                      |
++=========+================================+
+| basic   | all subhalos                   |
++---------+--------------------------------+
+| general | :math:`N_{\rm{}dm} \geq{} 100` |
++---------+--------------------------------+

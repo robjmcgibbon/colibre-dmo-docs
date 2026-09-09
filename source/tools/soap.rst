@@ -4,26 +4,30 @@ SOAP
 If you need to compute properties for all subhalos in a simulation,
 it can be useful to use `SOAP <https://github.com/SWIFTSIM/SOAP>`__.
 The standard SOAP catalogues include a large number of precomputed properties,
-but SOAP can also be configured to compute only a selected subset, which significantly reduces runtime.
-
-To get started, clone the repository and run ``./scripts/cosma_python_env.sh`` to install an editable version of SOAP.
-You can then execute ``./tests/COLIBRE/run_L0025N0188_Thermal.sh`` to process a small set of halos as a test case.
-
+but SOAP can also be configured to compute only a selected subset,
+which significantly reduces runtime.
 Below is a minimal parameter file required to run SOAP.
-You can extend it with additional apertures or properties as needed by comparing it
-with `the full COLIBRE parameter file <https://github.com/SWIFTSIM/SOAP/blob/master/parameter_files/COLIBRE_THERMAL.yml>`__.
 
-Further details on running SOAP are available `in the repository documentation <https://github.com/SWIFTSIM/SOAP#computing-halo-properties>`__.
-Note that there is no need to regenerate membership files, the existing ones can be reused.
-The repository also includes `guidance on adding new properties <https://github.com/SWIFTSIM/SOAP?tab=readme-ov-file#modifying-the-code>`__.
+.. note:: Unlike the other examples, SOAP reads the snapshot and halo finder
+          output directly rather than through the data service, so you need to
+          :doc:`download </service_docs/index>` the files for the snapshots you
+          want to process and set ``sim_dir`` to where you put them.
+
+
+Further details on running SOAP are available
+`in the repository documentation <https://github.com/SWIFTSIM/SOAP#computing-halo-properties>`__.
+Note that there is no need to regenerate membership files,
+the existing ones can be reused.
+The repository also includes
+`guidance on adding new properties <https://github.com/SWIFTSIM/SOAP?tab=readme-ov-file#modifying-the-code>`__.
 
 .. code-block:: yaml
 
    # Values in this section are substituted into the other sections
    Parameters:
-     sim_dir: /cosma8/data/dp004/colibre/Runs
-     output_dir: /snap8/scratch/dp004/dc-mcgi1/soap_example
-     scratch_dir: /snap8/scratch/dp004/dc-mcgi1/soap_example
+     sim_dir: /path/to/downloaded/colibre/data
+     output_dir: /path/to/soap_example
+     scratch_dir: /path/to/scratch/soap_example
 
    # Location of the Swift snapshots:
    Snapshots:
@@ -45,45 +49,40 @@ The repository also includes `guidance on adding new properties <https://github.
      # Where to write temporary chunk output
      chunk_dir: "{scratch_dir}/{sim_name}/SOAP-tmp/"
 
+   SOProperties:
+     properties:
+       CentreOfMass: true
+       CentreOfMassVelocity: true
+       Concentration: true
+       ConcentrationUnsoftened: true
+       MassFractionSatellites: true
+       MassFractionExternal: true
+       MaximumCircularVelocity: true
+       MaximumCircularVelocityRadius: true
+       NumberOfDarkMatterParticles: true
+       SORadius: true
+       SpinParameter: true
+       TotalMass: true
+   variations:
+     200_crit:
+       type: crit
+       value: 200.0
+     500_crit:
+       type: crit
+       value: 500.0
+
    SubhaloProperties:
      properties:
        EncloseRadius: true
-       NumberOfBlackHoleParticles: true
        NumberOfDarkMatterParticles: true
-       NumberOfGasParticles: true
-       NumberOfStarParticles: true
        TotalMass: true
 
-   aliases:
-     PartType0/LastSNIIKineticFeedbackDensities: PartType0/DensitiesAtLastSupernovaEvent
-     PartType0/LastSNIIThermalFeedbackDensities: PartType0/DensitiesAtLastSupernovaEvent
-     snipshot:
-       PartType0/SpeciesFractions: PartType0/ReducedSpeciesFractions
-       PartType0/ElementMassFractions: PartType0/ReducedElementMassFractions
-       PartType0/LastSNIIKineticFeedbackDensities: PartType0/DensitiesAtLastSupernovaEvent
-       PartType0/LastSNIIThermalFeedbackDensities: PartType0/DensitiesAtLastSupernovaEvent
    filters:
      general:
        limit: 100
        properties:
-         - BoundSubhalo/NumberOfGasParticles
          - BoundSubhalo/NumberOfDarkMatterParticles
-         - BoundSubhalo/NumberOfStarParticles
-         - BoundSubhalo/NumberOfBlackHoleParticles
        combine_properties: sum
-   defined_constants:
-     O_H_sun: 4.9e-4
-     Fe_H_sun: 3.16e-5
-     N_O_sun: 0.138
-     C_O_sun: 0.549
-     Mg_H_sun: 3.98e-5
    calculations:
      calculate_missing_properties: false
      strict_halo_copy: false
-     recently_heated_gas_filter:
-       delta_time_myr: 15
-       use_AGN_delta_T: false
-     cold_dense_gas_filter:
-       maximum_temperature_K: 3.16e4
-       minimum_hydrogen_number_density_cm3: 0.1
-

@@ -1,10 +1,10 @@
 :orphan:
 
-Satellite stellar mass function
-================================
+Satellite bound mass function
+=============================
 
 Example code for selecting the satellites of a halo and plotting
-their stellar mass function.
+their bound mass function.
 The most massive halo in the box (by :math:`M_{200c}`) is identified,
 and then all satellite subhalos
 are selected using the ``is_central`` flag and ``host_halo_index``.
@@ -18,11 +18,14 @@ are selected using the ``is_central`` flag and ``host_halo_index``.
     # ---------------------------------------------------------
     # Load the SOAP catalogue using swiftsimio
     # ---------------------------------------------------------
-    base_dir = "/cosma8/data/dp004/colibre/Runs/"
-    run = "L0100N1504/Thermal"
+    # Files are read from the data service without downloading them. See the
+    # swiftsimio page for how to open files you have downloaded instead.
+    import hdfstream
+    root_dir = hdfstream.open("cosma", "/")
+
+    run = "COLIBRE/L100_m6/DMO"
     snap_nr = 127  # z=0
-    soap_filename = f"{base_dir}/{run}/SOAP-HBT/halo_properties_{snap_nr:04}.hdf5"
-    soap = sw.load(soap_filename)
+    soap = sw.load(root_dir[f"{run}/SOAP-HBT/halo_properties_{snap_nr:04}.hdf5"])
 
     # ---------------------------------------------------------
     # Find the most massive halo by M200c
@@ -48,30 +51,29 @@ are selected using the ``is_central`` flag and ``host_halo_index``.
     print(f"Number of satellites: {np.sum(sat_mask)}")
 
     # ---------------------------------------------------------
-    # Get stellar masses of satellites with non-zero stellar mass
+    # Get the bound mass of each satellite
     # ---------------------------------------------------------
-    sat_stellar_mass = soap.exclusive_sphere_50kpc.stellar_mass[sat_mask].to_physical_value("Msun")
-    sat_stellar_mass = sat_stellar_mass[sat_stellar_mass > 0]
+    # bound_subhalo contains the properties of all the particles bound to a
+    # subhalo, so total_mass here is the total bound mass of the satellite.
+    sat_bound_mass = soap.bound_subhalo.total_mass[sat_mask].to_physical_value("Msun")
 
-    print(f"Satellites with non-zero stellar mass: {len(sat_stellar_mass)}")
-
     # ---------------------------------------------------------
-    # Plot the stellar mass function
+    # Plot the bound mass function
     # ---------------------------------------------------------
-    bins = np.arange(6.5, 12.5, 0.5)
+    bins = np.arange(8.0, 14.0, 0.5)
 
     fig, ax = plt.subplots(1)
 
     ax.stairs(
-        np.histogram(np.log10(sat_stellar_mass), bins=bins)[0],
+        np.histogram(np.log10(sat_bound_mass), bins=bins)[0],
         bins,
         fill=False,
     )
 
-    ax.set_xlabel(r"$\log_{10}(M_* \, / \, \mathrm{M}_\odot)$")
+    ax.set_xlabel(r"$\log_{10}(M_{\mathrm{bound}} \, / \, \mathrm{M}_\odot)$")
     ax.set_ylabel("Number of satellites")
     ax.set_yscale("log")
-    ax.set_title(f"Satellite SMF (TrackId = {track_id})")
+    ax.set_title(f"Satellite bound mass function (TrackId = {track_id})")
 
-    plt.savefig("satellite_smf.png", dpi=200)
+    plt.savefig("satellite_bound_mass_function.png", dpi=200)
     plt.close()

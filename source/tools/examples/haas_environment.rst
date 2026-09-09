@@ -3,7 +3,7 @@
 Computing Haas+ 2012 environmental measure
 ==========================================
 
-Example code for computing the environmental measure from `Haas et al. 2012 <https://ui.adsabs.harvard.edu/abs/2012MNRAS.419.2133H/>`__. Thanks to Victor for providing this code.
+Example code for computing the environmental measure from `Haas et al. 2012 <https://ui.adsabs.harvard.edu/abs/2012MNRAS.419.2133H/>`__.
 
 .. code-block:: python
 
@@ -16,11 +16,14 @@ Example code for computing the environmental measure from `Haas et al. 2012 <htt
     # ---------------------------------------------------------
     # Load the SOAP catalogue using swiftsimio
     # ---------------------------------------------------------
-    base_dir = "/cosma8/data/dp004/colibre/Runs/"
-    run = "L0100N1504/Thermal"
+    # Files are read from the data service without downloading them. See the
+    # swiftsimio page for how to open files you have downloaded instead.
+    import hdfstream
+    root_dir = hdfstream.open("cosma", "/")
+
+    run = "COLIBRE/L100_m6/DMO"
     snap_nr = 127 # z=0
-    soap_filename = f"{base_dir}/{run}/SOAP-HBT/halo_properties_{snap_nr:04}.hdf5"
-    soap = sw.load(soap_filename)
+    soap = sw.load(root_dir[f"{run}/SOAP-HBT/halo_properties_{snap_nr:04}.hdf5"])
 
     # ---------------------------------------------------------
     # Convert everything to consistent physical units and extract the raw numpy values
@@ -29,15 +32,15 @@ Example code for computing the environmental measure from `Haas et al. 2012 <htt
     boxsize = soap.metadata.boxsize[0].to_comoving_value("Mpc")
     halo_centre = soap.bound_subhalo.centre_of_mass.to_physical_value("Mpc")
     halo_M200c = soap.spherical_overdensity_200_crit.total_mass.to_physical_value("Msun")
-    stellar_mass = soap.exclusive_sphere_50kpc.stellar_mass.to_physical_value("Msun")
+    bound_mass = soap.bound_subhalo.total_mass.to_physical_value("Msun")
     halo_R200c = soap.spherical_overdensity_200_crit.soradius.to_comoving_value("Mpc")
 
     # ---------------------------------------------------------
-    # Filter for Central Halos with nonzero stellar mass
+    # Filter for central halos with nonzero bound mass
     # ---------------------------------------------------------
     # Spherically overdense properties are not computed for satellites (they are 0).
     # We use this to isolate only the central halos for our tree.
-    is_central = (halo_M200c > 0) & (stellar_mass > 0)
+    is_central = (halo_M200c > 0) & (bound_mass > 0)
 
     central_centres = halo_centre[is_central]
     central_M200c = halo_M200c[is_central]
@@ -146,4 +149,3 @@ Example code for computing the environmental measure from `Haas et al. 2012 <htt
     # Save and display
     plt.savefig('environmental_measure_2dhist.png', dpi=200)
     plt.close()
-
