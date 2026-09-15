@@ -7,8 +7,8 @@ This service provides documentation for the dark matter only (DMO) runs of the
 Publications making use of the public COLIBRE data are kindly requested to:
 
   * Cite the two papers presenting the COLIBRE project:
-    `Schaye et al (2026) <https://ui.adsabs.harvard.edu/abs/2025arXiv250821126S>`__
-    and `Chaikin et al (2026) <https://ui.adsabs.harvard.edu/abs/2025arXiv250904067C>`__.
+    `Schaye et al (2026) <https://ui.adsabs.harvard.edu/abs/2026MNRAS.548ag375S>`__
+    and `Chaikin et al (2026) <https://ui.adsabs.harvard.edu/abs/2026MNRAS.548ag300C>`__.
 
   * Add the following statement to the acknowledgements:
 
